@@ -229,6 +229,7 @@ h1, h2, h3 { font-weight: 600; letter-spacing: -0.03em; }
   width: 100%;
   height: 100%;
   object-fit: cover;
+  opacity: 0.3;
 }
 .hero__overlay {
   position: absolute;
@@ -390,14 +391,23 @@ main .section:not(:first-of-type) { border-top: 1px solid var(--line); }
 @media (min-width: 760px) {
   .work-card__image { aspect-ratio: 16 / 10; }
 }
+
+/* 1. Varsayılan Durum (Siyah Beyaz Başlıyoruz) */
 .work-card__image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   filter: grayscale(1) contrast(1.15);
   transform: scale(1);
-  transition: transform 0.9s var(--ease), filter 0.5s ease;
+  /* Renk geçişini 0.6s yaptık ki yağ gibi aksın */
+  transition: transform 0.9s var(--ease), filter 0.6s ease; 
 }
+
+/* 2. JavaScript fotoğrafı ekranda gördüğünde renklendirecek (Mobil ve Masaüstü) */
+.work-card.in-view .work-card__image img {
+  filter: grayscale(0) contrast(1.15);
+}
+
 .work-card__image::after {
   content: "";
   position: absolute;
@@ -406,8 +416,6 @@ main .section:not(:first-of-type) { border-top: 1px solid var(--line); }
   opacity: 0;
   transition: opacity 0.5s ease;
 }
-.work-card:hover .work-card__image img { transform: scale(1.06); }
-.work-card:hover .work-card__image::after { opacity: 1; }
 
 .work-card__bottom {
   display: flex;
@@ -421,7 +429,7 @@ main .section:not(:first-of-type) { border-top: 1px solid var(--line); }
   font-size: var(--fs-h3);
   transition: transform 0.5s var(--ease);
 }
-.work-card:hover .work-card__bottom h3 { transform: translateX(6px); }
+
 .work-card__bottom p {
   font-family: var(--font-mono);
   font-size: 0.75rem;
@@ -431,6 +439,23 @@ main .section:not(:first-of-type) { border-top: 1px solid var(--line); }
   text-align: right;
 }
 
+/* =========================================================
+   3. SADECE BİLGİSAYARLAR İÇİN HOVER (MOUSE) EFEKTLERİ
+   ========================================================= */
+@media (hover: hover) {
+  .work-card:hover .work-card__image img { 
+    transform: scale(1.06); 
+    filter: grayscale(0) contrast(1.15); 
+  }
+  
+  .work-card:hover .work-card__image::after { 
+    opacity: 0; 
+  }
+  
+  .work-card:hover .work-card__bottom h3 { 
+    transform: translateX(6px); 
+  }
+}
 /* =========================================================
    SERVICES — native <details> accordion, no JS
    ========================================================= */
